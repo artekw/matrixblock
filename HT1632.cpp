@@ -8,7 +8,7 @@
 #define swap(a, b) { uint16_t t = a; a = b; b = t; }
 
 uint16_t _BV(uint8_t value) {
-  return (uint16_t)BIT0 << value;     
+  return (uint16_t)BIT0 << value;
 }
 
 HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1) {
@@ -16,22 +16,22 @@ HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t
 
   matrices[0] = HT1632(bank, data, wr, cs1);
   matrixNum  = 1;
-  _width = 24 * matrixNum;
+  _width = 32 * matrixNum;
   _height = 16;
 }
 
-HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, 
+HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr,
 				 uint8_t cs1, uint8_t cs2) {
   matrices = (HT1632 *)malloc(2 * sizeof(HT1632));
 
   matrices[0] = HT1632(bank, data, wr, cs1);
   matrices[1] = HT1632(bank, data, wr, cs2);
   matrixNum  = 2;
-  _width = 24 * matrixNum;
+  _width = 32 * matrixNum;
   _height = 16;
 }
 
-HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, 
+HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr,
 				 uint8_t cs1, uint8_t cs2, uint8_t cs3) {
   matrices = (HT1632 *)malloc(3 * sizeof(HT1632));
 
@@ -39,12 +39,12 @@ HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr,
   matrices[1] = HT1632(bank, data, wr, cs2);
   matrices[2] = HT1632(bank, data, wr, cs3);
   matrixNum  = 3;
-  _width = 24 * matrixNum;
+  _width = 32 * matrixNum;
   _height = 16;
 }
 
-HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, 
-				 uint8_t cs1, uint8_t cs2, 
+HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr,
+				 uint8_t cs1, uint8_t cs2,
 				 uint8_t cs3, uint8_t cs4) {
   matrices = (HT1632 *)malloc(4 * sizeof(HT1632));
 
@@ -53,7 +53,7 @@ HT1632LEDMatrix::HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr,
   matrices[2] = HT1632(bank, data, wr, cs3);
   matrices[3] = HT1632(bank, data, wr, cs4);
   matrixNum  = 4;
-  _width = 24 * matrixNum;
+  _width = 32 * matrixNum;
   _height = 16;
 }
 
@@ -71,8 +71,8 @@ void HT1632LEDMatrix::drawPixel(uint8_t x, uint8_t y, uint8_t color) {
 
   uint8_t m;
   // figure out which matrix controller it is
-  m = x / 24;
-  x %= 24;
+  m = x / 32;
+  x %= 32;
 
   uint16_t i;
 
@@ -89,11 +89,11 @@ void HT1632LEDMatrix::drawPixel(uint8_t x, uint8_t y, uint8_t color) {
     y *= 2;
   } else {
     y = (y-8) * 2 + 1;
-  } 
+  }
 
   i += y * 8;
 
-  if (color) 
+  if (color)
     matrices[m].setPixel(i);
   else
     matrices[m].clrPixel(i);
@@ -145,7 +145,7 @@ void HT1632LEDMatrix::writeScreen() {
 }
 
 // bresenham's algorithm - thx wikpedia
-void HT1632LEDMatrix::drawLine(int8_t x0, int8_t y0, int8_t x1, int8_t y1, 
+void HT1632LEDMatrix::drawLine(int8_t x0, int8_t y0, int8_t x1, int8_t y1,
 		      uint8_t color) {
   uint16_t steep = abs(y1 - y0) > abs(x1 - x0);
   if (steep) {
@@ -185,7 +185,7 @@ void HT1632LEDMatrix::drawLine(int8_t x0, int8_t y0, int8_t x1, int8_t y1,
 }
 
 // draw a rectangle
-void HT1632LEDMatrix::drawRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, 
+void HT1632LEDMatrix::drawRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
 		      uint8_t color) {
   drawLine(x, y, x+w-1, y, color);
   drawLine(x, y+h-1, x+w-1, y+h-1, color);
@@ -195,7 +195,7 @@ void HT1632LEDMatrix::drawRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
 }
 
 // fill a rectangle
-void HT1632LEDMatrix::fillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h, 
+void HT1632LEDMatrix::fillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
 		      uint8_t color) {
   for (uint8_t i=x; i<x+w; i++) {
     for (uint8_t j=y; j<y+h; j++) {
@@ -207,7 +207,7 @@ void HT1632LEDMatrix::fillRect(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
 
 
 // draw a circle outline
-void HT1632LEDMatrix::drawCircle(uint8_t x0, uint8_t y0, uint8_t r, 
+void HT1632LEDMatrix::drawCircle(uint8_t x0, uint8_t y0, uint8_t r,
 			uint8_t color) {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -229,17 +229,17 @@ void HT1632LEDMatrix::drawCircle(uint8_t x0, uint8_t y0, uint8_t r,
     x++;
     ddF_x += 2;
     f += ddF_x;
-  
+
     drawPixel(x0 + x, y0 + y, color);
     drawPixel(x0 - x, y0 + y, color);
     drawPixel(x0 + x, y0 - y, color);
     drawPixel(x0 - x, y0 - y, color);
-    
+
     drawPixel(x0 + y, y0 + x, color);
     drawPixel(x0 - y, y0 + x, color);
     drawPixel(x0 + y, y0 - x, color);
     drawPixel(x0 - y, y0 - x, color);
-    
+
   }
 }
 
@@ -263,7 +263,7 @@ void HT1632LEDMatrix::fillCircle(uint8_t x0, uint8_t y0, uint8_t r, uint8_t colo
     x++;
     ddF_x += 2;
     f += ddF_x;
-  
+
     drawLine(x0+x, y0-y, x0+x, y0+y+1, color);
     drawLine(x0-x, y0-y, x0-x, y0+y+1, color);
     drawLine(x0+y, y0-x, x0+y, y0+x+1, color);
@@ -272,7 +272,7 @@ void HT1632LEDMatrix::fillCircle(uint8_t x0, uint8_t y0, uint8_t r, uint8_t colo
 }
 
 void HT1632LEDMatrix::setCursor(uint8_t x, uint8_t y) {
-  cursor_x = x; 
+  cursor_x = x;
   cursor_y = y;
 }
 
@@ -297,7 +297,7 @@ void HT1632LEDMatrix::write(uint8_t c) {
 }
 
 // draw a character
-void HT1632LEDMatrix::drawChar(uint8_t x, uint8_t y, char c, 
+void HT1632LEDMatrix::drawChar(uint8_t x, uint8_t y, char c,
 			      uint16_t color, uint8_t size) {
   for (uint8_t i =0; i<5; i++ ) {
     uint8_t line = font[(c*5)+i];
@@ -307,14 +307,14 @@ void HT1632LEDMatrix::drawChar(uint8_t x, uint8_t y, char c,
 	  drawPixel(x+i, y+j, color);
 	else {  // big size
 	  fillRect(x+i*size, y+j*size, size, size, color);
-	} 
+	}
       }
       line >>= 1;
     }
   }
 }
 
-void HT1632LEDMatrix::drawBitmap(uint8_t x, uint8_t y, 
+void HT1632LEDMatrix::drawBitmap(uint8_t x, uint8_t y,
 			const uint8_t *bitmap, uint8_t w, uint8_t h,
 			uint8_t color) {
   for (uint8_t j=0; j<h; j++) {
@@ -343,7 +343,7 @@ HT1632::HT1632(uint8_t bank, int8_t data, int8_t wr, int8_t cs, int8_t rd) {
   set_gpio_direction(bank * 32 + _cs, "out");
   export_gpio(bank * 32 + _rd);
   set_gpio_direction(bank * 32 + _rd, "out");
-  
+
   gpiobank = new GPIO_MMAP(bank);
 
   if (_cs > 0) {
@@ -355,14 +355,14 @@ HT1632::HT1632(uint8_t bank, int8_t data, int8_t wr, int8_t cs, int8_t rd) {
   if (_data > 0) {
     gpiobank->write(_data, 1);
   }
-  if (_rd > 0) {  
+  if (_rd > 0) {
     gpiobank->write(_rd, 1);
   }
-  
+
   for (uint8_t i=0; i<48; i++) {
     ledmatrix[i] = 0;
   }
-  
+
   ts.tv_sec = 0;
   ts.tv_nsec = DELAY;
 }
@@ -375,8 +375,8 @@ void HT1632::begin(uint8_t type) {
   sendcommand(HT1632_INT_RC);
   sendcommand(type);
   sendcommand(HT1632_PWM_CONTROL | 0xF);
-  
-  WIDTH = 24;
+
+  WIDTH = 32;
   HEIGHT = 16;
 }
 
@@ -386,18 +386,18 @@ void HT1632::setBrightness(uint8_t pwm) {
 }
 
 void HT1632::blink(bool blinky) {
-  if (blinky) 
+  if (blinky)
     sendcommand(HT1632_BLINK_ON);
   else
     sendcommand(HT1632_BLINK_OFF);
 }
 
 void HT1632::setPixel(uint16_t i) {
-  ledmatrix[i/8] |= _BV(i%8); 
+  ledmatrix[i/8] |= _BV(i%8);
 }
 
 void HT1632::clrPixel(uint16_t i) {
-  ledmatrix[i/8] &= ~_BV(i%8); 
+  ledmatrix[i/8] &= ~_BV(i%8);
 }
 
 void HT1632::dumpScreen() {
