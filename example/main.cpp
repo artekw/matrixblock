@@ -1,9 +1,9 @@
-#include "../Resources/adafruit/HT1632/HT1632.h"
+#include "../HT1632.h"
 #include <stdio.h>
 #include <unistd.h>
 #include "icons.c"
 
-/* 
+/*
 This is a basic demo program showing how to write to a HT1632
 These can be used for up to 16x24 LED matrix grids, with internal memory
 and using only 3 pins - data, write and select.
@@ -47,7 +47,7 @@ void testMatrix2(HT1632LEDMatrix *matrix) {
 
 void testMatrix1(HT1632LEDMatrix *matrix) {
   //Display icon
-  matrix->drawBitmap(0, 0, icon, matrix->width(), matrix->height(), 1);  
+  matrix->drawBitmap(0, 0, icon, matrix->width(), matrix->height(), 1);
   matrix->writeScreen();
   usleep(2000000);
 
@@ -76,19 +76,19 @@ int main(void) {
   printf("Starting...\n");
   HT1632LEDMatrix matrix = HT1632LEDMatrix(BANK, DATA, WR, CS);
   matrix.begin(HT1632_COMMON_16NMOS);
-  
+
   printf("Clear\n");
   matrix.clearScreen();
-  
+
   printf("Test #1\n");
   testMatrix1(&matrix);
 
   printf("Clear\n");
   matrix.clearScreen();
-  
+
   printf("Test2\n");
   testMatrix2(&matrix);
-  
+
   printf("Done!\n");
   return 0;
 }
