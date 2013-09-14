@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <time.h>
-#include "../../MMAP/mmapgpio.h"
+#include "MMAP/mmapgpio.h"
 
 #define DELAY 1000
 
@@ -58,7 +58,7 @@ class HT1632 {
   HT1632(uint8_t bank, int8_t data, int8_t wr, int8_t cs, int8_t rd = -1);
 
   void begin(uint8_t type);
-  
+
   void clrPixel(uint16_t i);
   void setPixel(uint16_t i);
 
@@ -69,7 +69,7 @@ class HT1632 {
   void fillScreen();
   void writeScreen();
   void dumpScreen();
-  
+
  private:
   GPIO_MMAP *gpiobank;
   int8_t WIDTH, HEIGHT;
@@ -86,9 +86,9 @@ class HT1632LEDMatrix {
  public:
   HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1);
   HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1, uint8_t cs2);
-  HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1, 
+  HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1,
 		  uint8_t cs, uint8_t cs3);
-  HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1, 
+  HT1632LEDMatrix(uint8_t bank, uint8_t data, uint8_t wr, uint8_t cs1,
 		  uint8_t cs2, uint8_t cs3, uint8_t cs4);
 
  void begin(uint8_t type);
@@ -117,7 +117,7 @@ class HT1632LEDMatrix {
   void write(uint8_t c);
   void drawChar(uint8_t x, uint8_t y, char c, uint16_t color, uint8_t size);
 
-  void drawBitmap(uint8_t x, uint8_t y, 
+  void drawBitmap(uint8_t x, uint8_t y,
 		  const uint8_t *bitmap, uint8_t w, uint8_t h,
 		  uint8_t color);
 

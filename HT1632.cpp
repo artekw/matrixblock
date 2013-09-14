@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "../../BoneHeader/BoneHeader.h"
+#include "BoneHeader/BoneHeader.h"
 
 #define swap(a, b) { uint16_t t = a; a = b; b = t; }
 
