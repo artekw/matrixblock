@@ -1,5 +1,6 @@
-#ifndef __HT1632C_h__
-#define __HT1632C_h__
+#include <stdint.h>
+#include <time.h>
+#include "MMAP/mmapgpio.h"
 
 /*
  * HT1632C.h
@@ -7,17 +8,11 @@
  */
 
 
-#if !defined(DEBUGPRINT)
-#define DEBUGPRINT(fmt, args...)
-#endif
-
-#include <Arduino.h>
-#include <avr/pgmspace.h>
-
 /*
  * commands written to the chip consist of a 3 bit "ID", followed by
  * either 9 bits of "Command code" or 7 bits of address + 4 bits of data.
  */
+
 #define HT1632_ID_CMD 4   /* ID = 100 - Commands */
 #define HT1632_ID_RD  6   /* ID = 110 - Read RAM */
 #define HT1632_ID_WR  5   /* ID = 101 - Write RAM */
@@ -45,7 +40,9 @@
 //#define X_MAX 32*Number_of_Displays
 //#define Y_MAX 16
 
-#define CLK_DELAY
+#define _NOP() do { __asm__ __volatile__ ("nop"); } while (0)
+
+#define CLK_DELAY _NOP()
 
 
 // possible values for a pixel;
@@ -64,6 +61,7 @@
 #define NCOLUMNS 8
 
 #define LONGDELAY 1000  // This delay BETWEEN demos
+#define DELAY 1000
 
 #define plot(x,y,v)  ht1632_plot(x,y,v)
 //#define cls          ht1632_clear
@@ -84,64 +82,58 @@ class HT1632c {
 
   public:
       // constructor
-      HT1632c(bool debug = false);
-      HT1632c(int da, int wr, int cs, int cl, bool debug = false);
-      HT1632c(int a, int da, int wr, int cs, int cl, bool debug = false);
+      HT1632c(uint8_t bank, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl);
+      HT1632c(uint8_t bank, uint8_t a, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl);
 
       /*
        * Set these variable to the values of the pins connected to the SureElectronics Module
        */
-      byte ht1632_data;  // Data pin
-      byte ht1632_wrclk; // Write clock pin
-      byte ht1632_cs;    // Chip Select
-      byte ht1632_clk;   // clock pin
+      uint8_t ht1632_data;  // Data pin
+      uint8_t ht1632_wrclk; // Write clock pin
+      uint8_t ht1632_cs;    // Chip Select
+      uint8_t ht1632_clk;   // clock pin
 
       /*
        * how many displays, chips and max size?
        */
-      byte Number_of_Displays;
-      byte CHIP_MAX; // 4*Number_of_Displays, Four HT1632Cs on one board
-      byte X_MAX; // 32*Number_of_Displays
-      byte Y_MAX; // 16
+      uint8_t Number_of_Displays;
+      uint8_t CHIP_MAX; // 4*Number_of_Displays, Four HT1632Cs on one board
+      uint8_t X_MAX; // 32*Number_of_Displays
+      uint8_t Y_MAX; // 16
+      uint8_t bank;
 
       // original functions
       void OutputCLK_Pulse(void); //Output a clock pulse
-      void OutputA_74164(unsigned char x); //Input a digital level to 74164
+      void OutputA_74164(uint8_t x); //Input a digital level to 74164
       void ChipSelect(int select);
-      void ht1632_writebits (byte bits, byte firstbit);
-      void ht1632_sendcmd (byte chipNo, byte command);
-      void ht1632_senddata (byte chipNo, byte address, byte data);
+      void ht1632_writebits (uint8_t bits, uint8_t firstbit);
+      void ht1632_sendcmd (uint8_t chipNo, uint8_t command);
+      void ht1632_senddata (uint8_t chipNo, uint8_t address, uint8_t data);
       void ht1632_setup();
-      byte xyToIndex(byte x, byte y);
-      int get_pixel(byte x, byte y);
-      void ht1632_plot (int x, int y, byte color);
+      uint8_t xyToIndex(uint8_t x, uint8_t y);
+      int get_pixel(uint8_t x, uint8_t y);
+      void ht1632_plot (uint8_t x, uint8_t y, uint8_t color);
       void ht1632_clear();
       void set_brightness(uint8_t pwm);
-      void ht1632_putchar(int x, int y, char c, byte color=GREEN);
-      void ht1632_putcharsizecolor(int x, int y,unsigned char c,  char size, byte color, byte secondcolor, unsigned char fontname[][NCOLUMNS],  int columncountfont, char rowcountfont, char oddeven);
-      void ht1632_putcharsize1D(int x, int y,unsigned char c,  char size, byte color,  byte secondcolor,unsigned char * fontname,  char columncountfont, char rowcountfont, char oddeven);
-      void ht1632_putbigbitmap(int x, int y, byte color, byte secondcolor,  unsigned char * bitmapname, int columncountbitmap, byte rowcountbitmap, char oddeven);
-      void scrollbitmapxcolor(int y, byte color, byte secondcolor,unsigned char * bitmapname,int columncountbitmap, byte rowcountbitmap,char oddeven,int delaytime);
-      void scrollbitmapycolor(int x,byte color, byte secondcolor,unsigned char * bitmapname ,int columncountbitmap, byte rowcountbitmap,char oddeven, int delaytime);
-      void scrolltextxcolor(int y,char Str1[ ], byte color, int delaytime);
-      void scrolltextsizexcolor(int y,char Str1[ ], char size, byte color, byte secondcolor,  unsigned char fontname[][NCOLUMNS], int columncountfont, char rowcountfont, char oddeven, int delaytime);
-       void scrolltextsizey(int x,char Str1[ ], char size, byte color, byte secondcolor, unsigned char fontname[][NCOLUMNS], int columncountfont, char rowcountfont, char oddeven, int delaytime);
-      void scrolltextsize1Dxcolor(int y, char Str1[ ], char size,  byte color, byte secondcolor, unsigned char * fontname,   int columncountfont, char rowcountfont, char oddeven, int delaytime);
+      //void ht1632_putchar(int x, int y, char c, uint8_t color=GREEN);
+      //void ht1632_putcharsizecolor(int x, int y,unsigned char c,  char size, uint8_t color, uint8_t secondcolor, unsigned char fontname[][NCOLUMNS],  int columncountfont, char rowcountfont, char oddeven);
+      //void ht1632_putcharsize1D(int x, int y,unsigned char c,  char size, uint8_t color,  uint8_t secondcolor,unsigned char * fontname,  char columncountfont, char rowcountfont, char oddeven);
+      //void scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime);
 
       // Arduino styled functions on top of the original code
       void setup();
       void cls();
-      void putChar(char c, int x, int y, byte color=GREEN);
+      //void putChar(char c, int x, int y, uint8_t color=GREEN);
       void text(char str[], int x, int y, int color = ORANGE);
       void text(int num, int x, int y, int color = GREEN);
-      void image(unsigned char * bitmapName, int x, int y, int width, int height, byte color = GREEN, byte secondColor = BLACK, char oddEven = 'G');
 
     private:
       // shall we print out debug information?
       bool debug;
+      GPIO_MMAP *gpiobank;
+      unsigned char ht1632_shadowram[64][8];
 
       int numdigits(int n);
       int extractDigit(int number, int place);
+      struct timespec ts;
 };
-
-#endif
