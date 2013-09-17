@@ -10,10 +10,10 @@ Multiple HT1632's can share data and write pins, but need unique CS pins.
 */
 
 #define BANK 1
-#define DATA 28 //1_28
-#define WR 17 //1_17
-#define CS 16 //1_16
-#define CLK 19 // 1_18
+#define DATA 28 // P9_12
+#define WR 17 // P9_23
+#define CS 16 // P9_15
+#define CLK 19 // P9_16
 
 void testMatrix(HT1632c *matrix) {
   matrix->ht1632_clear();
