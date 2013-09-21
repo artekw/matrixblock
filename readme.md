@@ -6,7 +6,6 @@ We plan to put on PCB RTC clock baseg on NXP PCF8563 chip.
 
 ### TODO
 
-- fonts
 - python bindings
 - cape schematics and PCB
 
