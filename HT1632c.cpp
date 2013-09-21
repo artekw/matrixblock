@@ -25,14 +25,22 @@ HT1632c::HT1632c(char bank, char da, char wr, char cs, char cl)
       X_MAX = 32*Number_of_Displays;
       Y_MAX = 16;
 
-      export_gpio(bank * 32 + ht1632_data);
-      set_gpio_direction(bank * 32 + ht1632_data, "out");
-      export_gpio(bank * 32 + ht1632_wrclk);
-      set_gpio_direction(bank * 32 + ht1632_wrclk, "out");
-      export_gpio(bank * 32 + ht1632_cs);
-      set_gpio_direction(bank * 32 + ht1632_cs, "out");
-      export_gpio(bank * 32 + ht1632_clk);
-      set_gpio_direction(bank * 32 + ht1632_clk, "out");
+      if (is_exported_gpio(bank * 32 + ht1632_data) == false) {
+        export_gpio(bank * 32 + ht1632_data);
+        set_gpio_direction(bank * 32 + ht1632_data, "out");
+      }
+      if (is_exported_gpio(bank * 32 + ht1632_wrclk) == false) {
+        export_gpio(bank * 32 + ht1632_wrclk);
+        set_gpio_direction(bank * 32 + ht1632_wrclk, "out");
+      }
+      if (is_exported_gpio(bank * 32 + ht1632_cs) == false) {
+        export_gpio(bank * 32 + ht1632_cs);
+        set_gpio_direction(bank * 32 + ht1632_cs, "out");
+      }
+      if (is_exported_gpio(bank * 32 + ht1632_clk) == false) {
+        export_gpio(bank * 32 + ht1632_clk);
+        set_gpio_direction(bank * 32 + ht1632_clk, "out");
+      }
 
       gpiobank = new GPIO_MMAP(bank);
 
@@ -66,14 +74,22 @@ HT1632c::HT1632c(char bank, char a, char da, char wr, char cs, char cl)
       X_MAX = 32*Number_of_Displays;
       Y_MAX = 16;
 
-      export_gpio(bank * 32 + ht1632_data);
-      set_gpio_direction(bank * 32 + ht1632_data, "out");
-      export_gpio(bank * 32 + ht1632_wrclk);
-      set_gpio_direction(bank * 32 + ht1632_wrclk, "out");
-      export_gpio(bank * 32 + ht1632_cs);
-      set_gpio_direction(bank * 32 + ht1632_cs, "out");
-      export_gpio(bank * 32 + ht1632_clk);
-      set_gpio_direction(bank * 32 + ht1632_clk, "out");
+      if (is_exported_gpio(bank * 32 + ht1632_data) == false) {
+        export_gpio(bank * 32 + ht1632_data);
+        set_gpio_direction(bank * 32 + ht1632_data, "out");
+      }
+      if (is_exported_gpio(bank * 32 + ht1632_wrclk) == false) {
+        export_gpio(bank * 32 + ht1632_wrclk);
+        set_gpio_direction(bank * 32 + ht1632_wrclk, "out");
+      }
+      if (is_exported_gpio(bank * 32 + ht1632_cs) == false) {
+        export_gpio(bank * 32 + ht1632_cs);
+        set_gpio_direction(bank * 32 + ht1632_cs, "out");
+      }
+      if (is_exported_gpio(bank * 32 + ht1632_clk) == false) {
+        export_gpio(bank * 32 + ht1632_clk);
+        set_gpio_direction(bank * 32 + ht1632_clk, "out");
+      }
 
       gpiobank = new GPIO_MMAP(bank);
 

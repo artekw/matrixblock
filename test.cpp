@@ -37,18 +37,31 @@ void testMatrix3(HT1632c *matrix) {
 
 void testMatrix4(HT1632c *matrix) {
   matrix->ht1632_clear();
-  matrix->scrolltextxcolor(0, "Test message",1, 8);
+  matrix->scrolltextxcolor(0, "Test message",1, 12);
   matrix->text("@bbbl", 0, 8, 1);
+}
+
+void clock(HT1632c *matrix) {
+  char buffer[80];
+  time_t rawtime;
+  struct tm *timeinfo;
+
+  time (&rawtime);
+  timeinfo = localtime (&rawtime);
+
+  strftime (buffer,80,"%H:%M",timeinfo);
+  matrix->text(buffer, 1, 0, 1);
 }
 
 int main(void) {
   printf("Starting...\n");
   HT1632c matrix = HT1632c(BANK, DATA, WR, CS, CLK);
   matrix.setup();
-  matrix.set_brightness(10);
+  matrix.set_brightness(2);
 
   printf("Test #1\n");
-  testMatrix4(&matrix);
+  //testMatrix4(&matrix);
+  clock(&matrix);
 
   printf("Done!\n");
   return 0;
