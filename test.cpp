@@ -1,6 +1,7 @@
 #include "HT1632c.h"
 #include <stdio.h>
 #include <unistd.h>
+#include <cstdlib>
 
 #define BANK 1
 #define DATA 28 // P9_12
@@ -53,11 +54,17 @@ void clock(HT1632c *matrix) {
   matrix->text(buffer, 1, 0, 1);
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
   printf("Starting...\n");
   HT1632c matrix = HT1632c(BANK, DATA, WR, CS, CLK);
   matrix.setup();
-  matrix.set_brightness(2);
+  if (argc != 2) {
+    matrix.set_brightness(0);
+  }
+  else {
+    matrix.set_brightness(atoi(argv[1]));
+  }
+
 
   printf("Test #1\n");
   //testMatrix4(&matrix);
