@@ -107,11 +107,8 @@ class HT1632c {
       void ht1632_clear();
       void set_brightness(uint8_t pwm);
       void ht1632_putchar(int x, int y, char c, uint8_t color=GREEN);
-      //void ht1632_putcharsizecolor(int x, int y,unsigned char c,  char size, uint8_t color, uint8_t secondcolor, unsigned char fontname[][NCOLUMNS],  int columncountfont, char rowcountfont, char oddeven);
-      //void ht1632_putcharsize1D(int x, int y,unsigned char c,  char size, uint8_t color,  uint8_t secondcolor,unsigned char * fontname,  char columncountfont, char rowcountfont, char oddeven);
-      //void scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime);
+      void scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime);
 
-      // Arduino styled functions on top of the original code
       void setup();
       void cls();
       void putChar(char c, int x, int y, uint8_t color=GREEN);

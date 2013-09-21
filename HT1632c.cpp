@@ -444,96 +444,6 @@ void HT1632c::ht1632_putchar(int x, int y, char c, uint8_t color)
   }
 }
 
-
-/*
- * Copy a character glyph from the myfont data structure to
- * display memory, with its upper left at the given coordinate
- * This is unoptimized and simply uses plot() to draw each dot.
- * Slightly adopted for using fonts with more rows then 8
- *  ht1632_putcharsizecolor(x location, y location , char ,
- *  size as integer, colorname (RANDOMCOLOR for random color),
- *  name of the font array,  umber of columns, number of rows, 'G' for Gimp or 'T' for The Dot Factory font arrays)
- */
-/*
-void HT1632c::ht1632_putcharsizecolor(int x, int y,unsigned char c,  char size, uint8_t color, uint8_t secondcolor, unsigned char fontname[][NCOLUMNS],  int columncountfont, char rowcountfont, char oddeven)
-{
-
-  uint8_t dots, dots2,dots3, cc,cc2, cc3, rr, g, t, t3, divisor;
-  uint8_t maximumdrawfont, showcolor,showsecondcolor; //128 for the large fonts (=8x8 and 12x8), 64 for all smaller ones
-  if  (rowcountfont<=7)
-    maximumdrawfont=64;
-  else
-    maximumdrawfont=128;
-  for (uint8_t col=0; col<columncountfont*size ; col++) {
-    // Addressing the right 8 lines because 'The Dot Factory' starts from the bottom, all others from top
-    if (rowcountfont <=8) {
-      cc=col/size;
-      dots = pgm_read_byte_near(&fontname[c][cc]);
-      divisor=1;
-    }
-    else if (rowcountfont>8 && rowcountfont <=16){
-      if (oddeven=='T'){
-        g=0;
-        t=1;
-      }
-      else {
-        g=1;
-        t=0;
-      }
-
-      cc=col/size*2+g;
-      cc2=col/size*2+t;
-      dots = pgm_read_byte_near(&fontname[c][cc]);
-      dots2 = pgm_read_byte_near(&fontname[c][cc2]);
-      divisor=2;
-    }
-    else if (rowcountfont>16 && rowcountfont <=24){
-      if (oddeven=='T'){
-        g=0;
-        t=1;
-        t3=2;
-      }
-      else {
-        g=2;
-        t=1;
-        t3=0;
-      }
-      divisor=3;
-      cc=col/size*divisor+g;
-      cc2=col/size*divisor+t;
-      cc3=col/size*divisor+t3;
-      dots = pgm_read_byte_near(&fontname[c][cc]);
-      dots2 = pgm_read_byte_near(&fontname[c][cc2]);
-      dots3 = pgm_read_byte_near(&fontname[c][cc3]);
-
-    }
-    for (uint8_t row=0; row < rowcountfont/divisor*size; row++) {
-      showcolor=color;
-      showsecondcolor=secondcolor;
-
-      rr=row/size;
-      if (dots & (maximumdrawfont>>rr))
-        plot(x+col, y+row, showcolor);
-      else
-        plot(x+col, y+row, showsecondcolor);
-      if (divisor>=2){
-        if (dots2 & (maximumdrawfont>>rr))
-          plot(x+col, y+rowcountfont/divisor+row, showcolor);
-        else
-          plot(x+col, y+rowcountfont/divisor+row, showsecondcolor);
-      }
-      if (divisor>=3){
-        if (dots3& (maximumdrawfont>>rr))
-          plot(x+col, y+2*rowcountfont/divisor+row, showcolor);
-        else
-          plot(x+col, y+2*rowcountfont/divisor+row, showsecondcolor);
-      }
-    }
-  }
-}
-
-*/
-
 /***********************************************************************
  * Scrolling  functions
  * for scrolling text and bitmaps
@@ -549,7 +459,7 @@ void HT1632c::ht1632_putcharsizecolor(int x, int y,unsigned char c,  char size, 
  * Original function by Bill Ho
  * scrolltextxcolor(y location, string ,  colorname (RANDOMCOLOR for random color), delaytime in milliseconds)
  */
- /*
+
 void HT1632c::scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime){
   int messageLength = strlen(Str1)+ 1;
   uint8_t showcolor;
@@ -561,13 +471,12 @@ void HT1632c::scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime)
         showcolor=color;
         ht1632_putchar(xpos + (6* i),  y,Str1[i],showcolor);
       }
-      sleep(delaytime);// reduce speed of scroll
+      usleep(delaytime * 10000);// reduce speed of scroll
       xpos--;
     }
     xa =1;
   }
 }
-*/
 // basic text function, no scroll
 void HT1632c::text(char str[], int x, int y, int color) {
   int m = strlen(str)+ 1;
