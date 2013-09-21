@@ -37,7 +37,7 @@ void testMatrix3(HT1632c *matrix) {
 
 void testMatrix4(HT1632c *matrix) {
   matrix->ht1632_clear();
-  matrix->scrolltextxcolor(0, "Arduino to minikont",2, 8);
+  matrix->scrolltextxcolor(0, "Test message",2, 8);
   matrix->text("@bbbl", 0, 8, 1);
 }
 
