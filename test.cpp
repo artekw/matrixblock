@@ -37,21 +37,15 @@ void testMatrix3(HT1632c *matrix) {
 
 void testMatrix4(HT1632c *matrix) {
   matrix->ht1632_clear();
-  matrix->text("abcde", 0, 0, 1);
-  matrix->text("fghij", 0, 8, 1);
-  if (matrix->get_pixel(8, 16) == GREEN) {
-    printf("green");
-  }
-  else if (matrix->get_pixel(8, 16) == RED) {
-    printf("red");
-  }
+  matrix->text("16x32", 0, 0, 2);
+  matrix->text("@bbbl", 0, 8, 1);
 }
 
 int main(void) {
   printf("Starting...\n");
   HT1632c matrix = HT1632c(BANK, DATA, WR, CS, CLK);
   matrix.setup();
-  matrix.set_brightness(1);
+  matrix.set_brightness(10);
 
 
   printf("Test #1\n");

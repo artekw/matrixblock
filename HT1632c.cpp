@@ -24,7 +24,7 @@ HT1632c::HT1632c(char bank, char da, char wr, char cs, char cl)
       CHIP_MAX =  4*Number_of_Displays; // Four HT1632Cs on one board
       X_MAX = 32*Number_of_Displays;
       Y_MAX = 16;
-/*
+
       export_gpio(bank * 32 + ht1632_data);
       set_gpio_direction(bank * 32 + ht1632_data, "out");
       export_gpio(bank * 32 + ht1632_wrclk);
@@ -33,9 +33,9 @@ HT1632c::HT1632c(char bank, char da, char wr, char cs, char cl)
       set_gpio_direction(bank * 32 + ht1632_cs, "out");
       export_gpio(bank * 32 + ht1632_clk);
       set_gpio_direction(bank * 32 + ht1632_clk, "out");
-*/
+
       gpiobank = new GPIO_MMAP(bank);
-/*
+
       if (ht1632_cs > 0) {
         gpiobank->write(ht1632_cs, 1);
       }
@@ -48,7 +48,7 @@ HT1632c::HT1632c(char bank, char da, char wr, char cs, char cl)
       if (ht1632_clk > 0) {
         gpiobank->write(ht1632_clk, 1);
       }
-*/
+
       ts.tv_sec = 0;
       ts.tv_nsec = DELAY;
 }
