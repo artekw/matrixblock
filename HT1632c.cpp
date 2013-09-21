@@ -113,7 +113,7 @@ void HT1632c::OutputCLK_Pulse(void) //Output a clock pulse
 //Input Argument: x: if x=1, 74164 outputs 1. If x?1, 74164 outputs 0.
 //Output Argument: void
 //**************************************************************************************************
-void HT1632c::OutputA_74164(uint8_t x) //Input a digital level to 74164
+void HT1632c::OutputA_74164(char x) //Input a digital level to 74164
 {
   gpiobank->write(ht1632_cs, (x==1 ? 1 : 0));
 }
@@ -198,7 +198,7 @@ void HT1632c::ht1632_writebits (uint8_t bits, uint8_t firstbit)
  * ht1632_sendcmd
  * Send a command to the ht1632 chip.
  */
-void HT1632c::ht1632_sendcmd (uint8_t chipNo, uint8_t command)
+void HT1632c::ht1632_sendcmd (char chipNo, uint8_t command)
 {
   ChipSelect(chipNo);
   ht1632_writebits(HT1632_ID_CMD, 1<<2);  // send 3 bits of id: COMMMAND
@@ -216,7 +216,7 @@ void HT1632c::ht1632_sendcmd (uint8_t chipNo, uint8_t command)
  * This means that somewhere a bit reversal will have to be done to get
  * zero-based addressing of words and dots within words.
  */
-void HT1632c::ht1632_senddata (uint8_t chipNo, uint8_t address, uint8_t data)
+void HT1632c::ht1632_senddata (char chipNo, uint8_t address, uint8_t data)
 {
   ChipSelect(chipNo);
   ht1632_writebits(HT1632_ID_WR, 1<<2);  // send ID: WRITE to RAM
@@ -260,9 +260,9 @@ void HT1632c::ht1632_setup()
 //                y: Y coordinate
 //Output Argument: address of xy
 //**************************************************************************************************
-uint8_t HT1632c::xyToIndex(uint8_t x, uint8_t y)
+char HT1632c::xyToIndex(char x, char y)
 {
-  uint8_t nChip, addr;
+  char nChip, addr;
 
 //  DC: Fixed to work with multiple screens
     nChip = 1 + 4 * (x/32) + (x-32 * (x/32) )/16 + (y>7?2:0);
@@ -287,8 +287,8 @@ uint8_t HT1632c::xyToIndex(uint8_t x, uint8_t y)
 //                y: Y coordinate
 //Output Argument: color setted on x,y coordinates
 //**************************************************************************************************
-int HT1632c::get_pixel(uint8_t x, uint8_t y) {
-  uint8_t addr, bitval, nChip;
+int HT1632c::get_pixel(char x, char y) {
+  char addr, bitval, nChip;
 
 //  DC: Fixed to work with multiple screens
     nChip = 1 + 4 * (x/32) + (x-32 * (x/32) )/16 + (y>7?2:0);
@@ -313,7 +313,7 @@ int HT1632c::get_pixel(uint8_t x, uint8_t y) {
   }
 }
 
-void HT1632c::set_brightness (uint8_t pwm) {
+void HT1632c::set_brightness (char pwm) {
   if (pwm > 15) {
     pwm = 15;
   }
@@ -329,9 +329,9 @@ void HT1632c::set_brightness (uint8_t pwm) {
  * black (off), red, green or yel0;
  */
 //void ht1632_plot (uint8_t x, uint8_t y, uint8_t color)
-void HT1632c::ht1632_plot (uint8_t x, uint8_t y, uint8_t color)
+void HT1632c::ht1632_plot (char x, char y, char color)
 {
-   uint8_t nChip, addr, bitval;
+   char nChip, addr, bitval;
 
   if (x<0 || x>X_MAX || y<0 || y>Y_MAX)
     return;
@@ -421,13 +421,13 @@ void HT1632c::cls() {
       plot(i, j, BLACK);
 }
 
-void HT1632c::putChar(char c, int x, int y, uint8_t color) {
+void HT1632c::putChar(char c, int x, int y, char color) {
   ht1632_putchar(x, y, c, color);
 }
 
 
 //void ht1632_putchar(byte x, byte y, char c, byte color=GREEN)
-void HT1632c::ht1632_putchar(int x, int y, char c, uint8_t color)
+void HT1632c::ht1632_putchar(int x, int y, char c, char color)
 {
   char dots;
   c = c - 32; // offset
@@ -460,9 +460,9 @@ void HT1632c::ht1632_putchar(int x, int y, char c, uint8_t color)
  * scrolltextxcolor(y location, string ,  colorname (RANDOMCOLOR for random color), delaytime in milliseconds)
  */
 
-void HT1632c::scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime){
+void HT1632c::scrolltextxcolor(int y,char Str1[ ], char color, int delaytime){
   int messageLength = strlen(Str1)+ 1;
-  uint8_t showcolor;
+  char showcolor;
   int xa = 0;
   while (xa<1) {
     int xpos = X_MAX;

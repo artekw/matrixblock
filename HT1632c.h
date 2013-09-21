@@ -95,25 +95,25 @@ class HT1632c {
 
       // original functions
       void OutputCLK_Pulse(void); //Output a clock pulse
-      void OutputA_74164(uint8_t x); //Input a digital level to 74164
+      void OutputA_74164(char x); //Input a digital level to 74164
       void ChipSelect(int select);
       void ht1632_writebits (uint8_t bits, uint8_t firstbit);
-      void ht1632_sendcmd (uint8_t chipNo, uint8_t command);
-      void ht1632_senddata (uint8_t chipNo, uint8_t address, uint8_t data);
+      void ht1632_sendcmd (char chipNo, uint8_t command);
+      void ht1632_senddata (char chipNo, uint8_t address, uint8_t data);
       void ht1632_setup();
-      uint8_t xyToIndex(uint8_t x, uint8_t y);
-      int get_pixel(uint8_t x, uint8_t y);
-      void ht1632_plot (uint8_t x, uint8_t y, uint8_t color);
+      char xyToIndex(char x, char y);
+      int get_pixel(char x, char y);
+      void ht1632_plot (char x, char y, char color);
       void ht1632_clear();
-      void set_brightness(uint8_t pwm);
-      void ht1632_putchar(int x, int y, char c, uint8_t color=GREEN);
-      void scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime);
+      void set_brightness(char pwm);
+      void ht1632_putchar(int x, int y, char c, char color=GREEN);
+      void scrolltextxcolor(int y,char Str1[ ], char color, int delaytime);
 
       void setup();
       void cls();
-      void putChar(char c, int x, int y, uint8_t color=GREEN);
-      void text(char str[], int x, int y, int color = ORANGE);
-      void text(int num, int x, int y, int color = GREEN);
+      void putChar(char c, int x, int y, char color=GREEN);
+      void text(char str[], int x, int y, int color=ORANGE);
+      void text(int num, int x, int y, int color=GREEN);
 
     private:
       GPIO_MMAP *gpiobank;
