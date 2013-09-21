@@ -1,6 +1,6 @@
 # matrixblock
 
-The goal of this project is create a cape for beaglebone black to drive a Sure Electronic 32x16 LED Display.
+The goal of this project is create a cape for beaglebone black to drive a [Sure Electronic 32x16 LED Display](http://www.sureelectronics.net/goods.php?id=1095).
 
 We plan to put on PCB RTC clock based on NXP PCF8563 chip.
 
