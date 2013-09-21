@@ -27,18 +27,18 @@ void signal_handler(int signo){
 }
 
 int main(int argc, char** argv){
-	
+
 	//variable declarations
 	struct pollfd fdset[1];
 	int nfds = 1;
 	int timeout = 3000;
 	int rc;
-	char* buf[MAX_BUF];	
-	
+	char* buf[MAX_BUF];
+
 	int gpio1, gpio2;
 	int gpio1_fd, gpio2_fd;
 	int gpio2_value = 0;
-		
+
 	//check that at least two arguments are passed in
 	if(argc < 3){
 		printf("Usage: %s <input-gpio> <output-gpio>\n", argv[0]);
@@ -70,7 +70,7 @@ int main(int argc, char** argv){
 
 	while(keepgoing){
 		memset((void*)fdset, 0, sizeof(fdset));
-	
+
 		fdset[0].fd = gpio1_fd;
 		fdset[0].events = POLLPRI;
 
@@ -82,7 +82,7 @@ int main(int argc, char** argv){
 		if (rc < 0){
 			printf("\npoll() failed!\n");
 		}
-	
+
 		if (rc == 0){
 			printf(".");
 		}
@@ -93,8 +93,8 @@ int main(int argc, char** argv){
 			gpio2_value = ~(gpio2_value)&1;
 			set_gpio_value(gpio2, gpio2_value);
 			printf("gpio2_value  = %d\n", gpio2_value);
-		}			
-		
+		}
+
 	}
 
 	gpio_fd_close(gpio1_fd);

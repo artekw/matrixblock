@@ -1,5 +1,5 @@
 #include "HT1632c.h"
-//#include "fonts.c"
+#include "fonts.c"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -10,11 +10,11 @@
 // indexes from 0 to 31 are allocated for green plane;
 // indexes from 32 to 63 are allocated for red plane;
 // when a bit is 1 in both planes, it is displayed as orange (green + red);
-unsigned char ht1632_shadowram[64][8] = {0};
+unsigned char ht1632_shadowram[64][4*2] = {0};
 
 // constructor:
 // assign pins, one single screen
-HT1632c::HT1632c(uint8_t bank, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl)
+HT1632c::HT1632c(char bank, char da, char wr, char cs, char cl)
 {
       ht1632_data = da;  // Data pin (pin 7 of display connector)
       ht1632_wrclk = wr; // Write clock pin (pin 5 of display connector)
@@ -24,7 +24,7 @@ HT1632c::HT1632c(uint8_t bank, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl)
       CHIP_MAX =  4*Number_of_Displays; // Four HT1632Cs on one board
       X_MAX = 32*Number_of_Displays;
       Y_MAX = 16;
-
+/*
       export_gpio(bank * 32 + ht1632_data);
       set_gpio_direction(bank * 32 + ht1632_data, "out");
       export_gpio(bank * 32 + ht1632_wrclk);
@@ -33,9 +33,9 @@ HT1632c::HT1632c(uint8_t bank, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl)
       set_gpio_direction(bank * 32 + ht1632_cs, "out");
       export_gpio(bank * 32 + ht1632_clk);
       set_gpio_direction(bank * 32 + ht1632_clk, "out");
-
+*/
       gpiobank = new GPIO_MMAP(bank);
-
+/*
       if (ht1632_cs > 0) {
         gpiobank->write(ht1632_cs, 1);
       }
@@ -48,14 +48,14 @@ HT1632c::HT1632c(uint8_t bank, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl)
       if (ht1632_clk > 0) {
         gpiobank->write(ht1632_clk, 1);
       }
-
+*/
       ts.tv_sec = 0;
       ts.tv_nsec = DELAY;
 }
 
 // constructor:
 // assign pins, multiple single screen
-HT1632c::HT1632c(uint8_t bank, uint8_t a, uint8_t da, uint8_t wr, uint8_t cs, uint8_t cl)
+HT1632c::HT1632c(char bank, char a, char da, char wr, char cs, char cl)
 {
       ht1632_data = da;  // Data pin (pin 7 of display connector)
       ht1632_wrclk = wr; // Write clock pin (pin 5 of display connector)
@@ -90,8 +90,8 @@ HT1632c::HT1632c(uint8_t bank, uint8_t a, uint8_t da, uint8_t wr, uint8_t cs, ui
         gpiobank->write(ht1632_clk, 1);
       }
 
-      ts.tv_sec = 0;
-      ts.tv_nsec = DELAY;
+      //ts.tv_sec = 0;
+      //ts.tv_nsec = DELAY;
 }
 
 //**************************************************************************************************
@@ -234,23 +234,23 @@ void HT1632c::ht1632_setup()
 {
   gpiobank->write(ht1632_cs, 1);  /* unselect (active 0) */
 
-  for (int j=1; j<=CHIP_MAX; j++)
+  for (char j=1; j<=CHIP_MAX; j++)
   {
     ht1632_sendcmd(j, HT1632_CMD_SYSDIS);  // Disable system
-    ht1632_sendcmd(j, HT1632_CMD_COMS00);
+    ht1632_sendcmd(j, HT1632_CMD_SYSON);  /* System on */
+    ht1632_sendcmd(j, HT1632_CMD_LEDON);  /* LEDs on */
     //ht1632_sendcmd(j, HT1632_CMD_BLOFF);
     ht1632_sendcmd(j, HT1632_CMD_MSTMD);  /* Master Mode */
     ht1632_sendcmd(j, HT1632_CMD_RCCLK);        // HT1632C
-    ht1632_sendcmd(j, HT1632_CMD_SYSON);  /* System on */
-    ht1632_sendcmd(j, HT1632_CMD_LEDON);  /* LEDs on */
+    ht1632_sendcmd(j, HT1632_CMD_COMS00);
     ht1632_sendcmd(j, HT1632_CMD_PWM);
 
-    for (uint8_t i=0; i<96; i++)
+    for (char i=0; i<96; i++)
     {
       ht1632_senddata(j, i, 0);  // clear the display!
     }
   }
-  //usleep(10000);
+  //usleep(100);
 }
 
 //**************************************************************************************************
@@ -420,87 +420,31 @@ void HT1632c::cls() {
     for(int j = 0; j < 16; j++)
       plot(i, j, BLACK);
 }
-/*
+
 void HT1632c::putChar(char c, int x, int y, uint8_t color) {
   ht1632_putchar(x, y, c, color);
 }
-*/
-/*
-//void ht1632_putchar(uint8_t x, uint8_t y, char c, uint8_t color=GREEN)
+
+
+//void ht1632_putchar(byte x, byte y, char c, byte color=GREEN)
 void HT1632c::ht1632_putchar(int x, int y, char c, uint8_t color)
 {
-  uint8_t dots;
-  //if (c >= 'A' && c <= 'Z' ||
-  //  (c >= 'a' && c <= 'z') ) {
-  //  c &= 0x1F;   // A-Z maps to 1-26
-  //}
-  //else if (c >= '0' && c <= '9') {
-  //  c = (c - '0') + 27;
-  //}
-  //else if (c == ' ') {
-  //  c = 0; // space
-  //}
+  char dots;
+  c = c - 32; // offset
 
-  if (c == ' ') {c = 0;}
-  else if (c == '!') {c = 1;}
-  else if (c == '"') {c = 2;}
-  else if (c == '#') {c = 3;}
-  else if (c == '$') {c = 4;}
-  else if (c == '%') {c = 5;}
-  else if (c == '&') {c = 6;}
-  //else if (c == ''') {c = 7;}
-  else if (c == '(') {c = 8;}
-  else if (c == ')') {c = 9;}
-  else if (c == '*') {c = 10;}
-  else if (c == '+') {c = 11;}
-  else if (c == ',') {c = 12;}
-  else if (c == '-') {c = 13;}
-  else if (c == '.') {c = 14;}
-  else if (c == '/') {c = 15;}
-
-  else if (c >= '0' && c <= '9') {
-    c = (c - '0') + 16;
-  }
-
-  else if (c == ':') {c = 26;}
-  else if (c == ';') {c = 27;}
-  else if (c == '<') {c = 28;}
-  else if (c == '=') {c = 29;}
-  else if (c == '>') {c = 30;}
-  else if (c == '?') {c = 31;}
-  else if (c == '@') {c = 32;}
-
-  else if (c >= 'A' && c <= 'Z') {
-    c = (c - 'A') + 33;
-  }
-
-  else if (c == '[') {c = 59;}
-  //else if (c == '\') {c = 60;}
-  else if (c == ']') {c = 61;}
-  else if (c == '^') {c = 62;}
-  else if (c == '_') {c = 63;}
-  else if (c == '`') {c = 64;}
-
-  else if (c >= 'a' && c <= 'z') {
-    c = (c - 'a') + 65;
-  }
-
-  else if (c == '{') {c = 91;}
-  else if (c == '|') {c = 92;}
-  else if (c == '}') {c = 93;}
-
-  for (char col=0; col< 6; col++) {
-    dots = &font[c][col];
-    for (char row=0; row < 7; row++) {
-      if (dots & (64>>row))          // only 7 rows.
+  for (uint8_t col=0; col< 6; col++) {
+    dots = pgm_read_byte_near(&font[c][col]);
+    for (uint8_t row=0; row < 8; row++) {
+      if (dots & (64>>row)) {         // only 7 rows.
         plot(x+col, y+row, color);
+      }
       else
         plot(x+col, y+row, 0);
     }
   }
 }
 
-*/
+
 /*
  * Copy a character glyph from the myfont data structure to
  * display memory, with its upper left at the given coordinate
@@ -587,8 +531,8 @@ void HT1632c::ht1632_putcharsizecolor(int x, int y,unsigned char c,  char size, 
     }
   }
 }
-*/
 
+*/
 
 /***********************************************************************
  * Scrolling  functions
@@ -623,7 +567,7 @@ void HT1632c::scrolltextxcolor(int y,char Str1[ ], uint8_t color, int delaytime)
     xa =1;
   }
 }
-
+*/
 // basic text function, no scroll
 void HT1632c::text(char str[], int x, int y, int color) {
   int m = strlen(str)+ 1;
@@ -660,5 +604,3 @@ return count;
 }
 
 // basic image function, assuming it fits on the screen
-
-*/

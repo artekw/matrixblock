@@ -4,7 +4,7 @@ The goal of this project is create a cape for beaglebone black to drive a Sure E
 
 We plan to put on PCB RTC clock baseg on NXP PCF8563 chip.
 
-## TODO
+### TODO
 
 - fonts
 - python bindings

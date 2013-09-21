@@ -2,13 +2,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-/*
-This is a basic demo program showing how to write to a HT1632
-These can be used for up to 16x24 LED matrix grids, with internal memory
-and using only 3 pins - data, write and select.
-Multiple HT1632's can share data and write pins, but need unique CS pins.
-*/
-
 #define BANK 1
 #define DATA 28 // P9_12
 #define WR 17 // P9_23
@@ -20,24 +13,49 @@ void testMatrix(HT1632c *matrix) {
   for (uint8_t i=0; i<32; i++) {
     for (uint8_t j=0; j<16; j++) {
     matrix->ht1632_plot(i,j,1);
-    usleep(50000);
+    usleep(100000);
     }
   }
-  //matrix->ht1632_clear();
-  //matrix->ht1632_plot(0,1,3);
-  //matrix->ht1632_clear();
-  //sleep(1);
+  matrix->ht1632_clear();
+}
+
+void testMatrix2(HT1632c *matrix) {
+  matrix->ht1632_clear();
+  for (uint8_t i=0; i<1000; i++) {
+    matrix->ht1632_plot(1,1,1);
+    usleep(100);
+    matrix->ht1632_plot(1,1,2);
+    usleep(100);
+  }
+}
+
+void testMatrix3(HT1632c *matrix) {
+  matrix->ht1632_clear();
+  matrix->ht1632_putchar(0,0,'a',2);
+  usleep(100);
+}
+
+void testMatrix4(HT1632c *matrix) {
+  matrix->ht1632_clear();
+  matrix->text("abcde", 0, 0, 1);
+  matrix->text("fghij", 0, 8, 1);
+  if (matrix->get_pixel(8, 16) == GREEN) {
+    printf("green");
+  }
+  else if (matrix->get_pixel(8, 16) == RED) {
+    printf("red");
+  }
 }
 
 int main(void) {
   printf("Starting...\n");
   HT1632c matrix = HT1632c(BANK, DATA, WR, CS, CLK);
   matrix.setup();
-  matrix.set_brightness(5);
+  matrix.set_brightness(1);
 
 
   printf("Test #1\n");
-  testMatrix(&matrix);
+  testMatrix4(&matrix);
 
   printf("Done!\n");
   return 0;

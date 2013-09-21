@@ -141,18 +141,18 @@ int unset_pwm(char* pwm);
 
 int export_gpio(int gpio){
 	FILE *fp;
-	
+
 	//open the export file
 	if((fp = fopen("/sys/class/gpio/export", "ab")) == NULL){
 		printf("Cannot open export file. \n");
 		return 1;
 	}
-	
+
 	//write specified gpio to export file
 	fprintf(fp, "%d\n", gpio);
 	fflush(fp);
 	fclose(fp);
-	
+
 	//return 0 if everything runs correctly
 	return 0;
 }
@@ -163,7 +163,7 @@ int export_gpio(int gpio){
 
 int unexport_gpio(int gpio){
 	FILE *fp;
-	
+
 	//open the unexport file
 	if((fp = fopen("/sys/class/gpio/unexport", "ab")) == NULL){
 		printf("Cannot open unexport file. \n");
@@ -182,7 +182,7 @@ int unexport_gpio(int gpio){
  * set_gpio_direction
  ****************************************************************/
 
-int set_gpio_direction(int gpio, char* direction){
+int set_gpio_direction(int gpio, const char* direction){
 	FILE *fp;
 	char path[MAX_BUF];
 
@@ -208,10 +208,10 @@ int set_gpio_direction(int gpio, char* direction){
 int set_gpio_value(int gpio, int value){
 	FILE *fp;
 	char path[MAX_BUF];
-	
+
 	//set value only if direction is out
 	snprintf(path, sizeof path, "/sys/class/gpio/gpio%d/value", gpio);
-	
+
 	if((fp = fopen(path, "w")) == NULL){
 		printf("Cannot open specified value file.\n", gpio);
 		return 1;
@@ -231,8 +231,8 @@ int set_gpio_value(int gpio, int value){
 int set_gpio_edge(int gpio, char* edge){
 	FILE *fp;
 	char path[MAX_BUF];
-	
-	//create path using specified gpio	
+
+	//create path using specified gpio
 	snprintf(path, sizeof path, "/sys/class/gpio/gpio%d/edge", gpio);
 	//open edge file
 	if((fp = fopen(path, "w")) == NULL){
@@ -258,7 +258,7 @@ int gpio_fd_open(int gpio)
 	char buf[MAX_BUF];
 
 	len = snprintf(buf, sizeof(buf), "/sys/class/gpio/gpio%d/value", gpio);
- 
+
 	fd = open(buf, O_RDONLY | O_NONBLOCK );
 	if (fd < 0) {
 		perror("gpio/fd_open");
@@ -283,19 +283,19 @@ int set_mux_value(char* mux, int value){
 	char path[MAX_BUF];
 
 	snprintf(path, sizeof path, "/sys/kernel/debug/omap_mux/%s", mux);
-	
+
 	if((fp = fopen(path, "w")) == NULL){
 		printf("Cannot open specified mux, %s\n", mux);
 		return 1;
 	}
-	
+
 	rewind(fp);
 	fprintf(fp, "%d\n", value);
 	fflush(fp);
 	fclose(fp);
 
 }
-	
+
 /****************************************************************
  * read_ain
  ****************************************************************/
@@ -314,20 +314,20 @@ int read_ain(char* ain){
 	if(fgets(buf, MAX_BUF, fp) == NULL){
 		printf("Cannot read specified ain pin, %s\n", ain);
 	}
-	
+
 	fclose(fp);
-	return atoi(buf);	
+	return atoi(buf);
 }
 
 /****************************************************************
  * set_pwm
- ****************************************************************/	
+ ****************************************************************/
 int set_pwm(char* pwm, int period_freq, int duty_percent){
 	FILE *fp;
 	char path[MAX_BUF];
-	
+
 	snprintf(path, sizeof path, "/sys/class/pwm/%s/run", pwm);
-	
+
 	if((fp = fopen(path, "w")) == NULL){
 		printf("Cannot open pwm run file, %s\n", path);
 		return 1;
