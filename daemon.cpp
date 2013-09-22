@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <cstdlib>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 #define BANK 1
 #define DATA 28 // P9_12
@@ -22,6 +27,13 @@ void clock(HT1632c *matrix) {
 }
 
 int main(int argc, char *argv[]) {
+  /*
+  args:
+    -p 8080 : port number
+    -b 0-15 : brightness level | default 0
+    <json string> : message to display on matrix
+  */
+
   printf("Starting...\n");
   HT1632c matrix = HT1632c(BANK, DATA, WR, CS, CLK);
   matrix.setup();
