@@ -326,7 +326,7 @@ int read_ain(char* ain){
 	char path[MAX_BUF];
 	char buf[MAX_BUF];
 
-	snprintf(path, sizeof path, "/sys/devices/platform/omap/tsc/%s", ain);
+	snprintf(path, sizeof path, "/sys/devices/ocp.2/helper.10/AIN%s", ain);
 
 	if((fp = fopen(path, "r")) == NULL){
 		printf("Cannot open specified ain pin, %s\n", ain);
