@@ -102,10 +102,11 @@ int set_mux_value(char* mux, int value);
 //***********************************************
 //read specified anilog pin
 //
-//USAGE: specify ain1-7 for reading Ex) "ain6"
+//USAGE: specify AIN0-6 for reading Ex) "AIN5"
 //	 will read ain5
 //
 //written by:	Andrew Miller
+//written by:	arteq
 //Date:		10 September 2012
 //***********************************************
 int read_ain(char* ain);
@@ -326,7 +327,7 @@ int read_ain(char* ain){
 	char path[MAX_BUF];
 	char buf[MAX_BUF];
 
-	snprintf(path, sizeof path, "/sys/devices/ocp.2/helper.10/AIN%s", ain);
+	snprintf(path, sizeof path, "/sys/devices/ocp.2/helper.10/%s", ain);
 
 	if((fp = fopen(path, "r")) == NULL){
 		printf("Cannot open specified ain pin, %s\n", ain);
