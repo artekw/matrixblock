@@ -171,12 +171,13 @@ int export_gpio(int gpio){
 bool is_exported_gpio(int gpio){
 
 	char s[200];
-    sprintf(s, "test -e /sys/class/gpio/gpio%d/value", gpio);
-    if (system(s) == 0){
-        return true;
-    }else{
-        return false;
-    }
+	sprintf(s, "test -e /sys/class/gpio/gpio%d/value", gpio);
+	if (system(s) == 0){
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 /****************************************************************
  * unexport_gpio
