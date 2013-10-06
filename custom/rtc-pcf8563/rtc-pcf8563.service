@@ -1,0 +1,11 @@
+[Unit]
+Description=PCF8563 RTC Service
+ 
+[Service]
+Type=simple
+WorkingDirectory=/usr/share/rtc_pcf8563
+ExecStart=/bin/bash clock_init.sh
+SyslogIdentifier=rtc_pcf8563
+ 
+[Install]
+WantedBy=multi-user.target
