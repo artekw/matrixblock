@@ -1,0 +1,5 @@
+#file format: name trigger
+beaglebone:green:heartbeat heartbeat
+# beaglebone:green:mmc0 mmc0
+# beaglebone:green:usr2 cpu0
+# beaglebone:green:usr3 mmc1
