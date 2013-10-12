@@ -255,7 +255,7 @@ void HT1632c::ht1632_setup()
     ht1632_sendcmd(j, HT1632_CMD_SYSDIS);  // Disable system
     ht1632_sendcmd(j, HT1632_CMD_SYSON);  /* System on */
     ht1632_sendcmd(j, HT1632_CMD_LEDON);  /* LEDs on */
-    //ht1632_sendcmd(j, HT1632_CMD_BLOFF);
+    ht1632_sendcmd(j, HT1632_CMD_BLOFF);
     ht1632_sendcmd(j, HT1632_CMD_MSTMD);  /* Master Mode */
     ht1632_sendcmd(j, HT1632_CMD_RCCLK);        // HT1632C
     ht1632_sendcmd(j, HT1632_CMD_COMS00);
