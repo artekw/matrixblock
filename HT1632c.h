@@ -1,3 +1,6 @@
+#ifndef HT1632_H
+#define HT1632_H
+
 #include <stdint.h>
 #include <time.h>
 #include "MMAP/mmapgpio.h"
@@ -123,3 +126,5 @@ class HT1632c {
       int extractDigit(int number, int place);
       struct timespec ts;
 };
+
+#endif  /* HT1632_H */

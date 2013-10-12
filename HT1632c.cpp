@@ -1,6 +1,9 @@
 #include "HT1632c.h"
 #include "fonts.c"
 #include <stdlib.h>
+#include <string.h>
+#include <cstdlib>
+#include <unistd.h>
 #include <stdio.h>
 #include <time.h>
 #include "BoneHeader/BoneHeader.h"

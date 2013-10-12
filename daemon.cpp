@@ -1,3 +1,4 @@
+//#include "BoneHeader/BoneHeader.h"
 #include "HT1632c.h"
 #include <stdio.h>
 #include <unistd.h>
@@ -23,7 +24,11 @@ void clock(HT1632c *matrix) {
   timeinfo = localtime (&rawtime);
 
   strftime (buffer,80,"%H:%M",timeinfo);
-  matrix->text(buffer, 1, 0, 1);
+  matrix->text(buffer, 1, 0, 2);
+}
+
+void adc() {
+
 }
 
 int main(int argc, char *argv[]) {
