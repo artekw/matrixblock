@@ -1,11 +1,15 @@
 /**
  * @file boneheader.h
  *
+ * author https://github.com/millerap/ECE497/blob/master/BoneHeader.h
+ * rewrite by Artur Wronowski
+ *
  * This file contains the headers for boneheader.c
  *
  * Licensed under the MIT License (MIT)
  * See MIT-LICENSE file for more information
  */
+
 
 #ifndef BONEHEADER_H
 #define BONEHEADER_H

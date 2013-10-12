@@ -1,4 +1,16 @@
-#include "BoneHeader.h"
+/**
+ * @file boneheader.cpp
+ *
+ * author https://github.com/millerap/ECE497/blob/master/BoneHeader.h
+ * rewrite by Artur Wronowski
+ *
+ * BeagleBone GPIO management
+ *
+ * Licensed under the MIT License (MIT)
+ * See MIT-LICENSE file for more information
+ */
+
+ #include "BoneHeader.h"
 
 /****************************************************************
  * export_gpio
@@ -221,6 +233,7 @@ int set_pwm(char* pwm, int period_freq, int duty_percent){
 
     if((fp = fopen(path, "w")) == NULL){
         printf("Cannot open pwm duty_ns file, %s\n", path);
+        return 0;
     }
 
     rewind(fp);
@@ -232,6 +245,7 @@ int set_pwm(char* pwm, int period_freq, int duty_percent){
 
     if((fp = fopen(path, "w")) == NULL){
         printf("Cannot open pwm period_freq file, %s\n", path);
+        return 0;
     }
 
     rewind(fp);
@@ -243,6 +257,7 @@ int set_pwm(char* pwm, int period_freq, int duty_percent){
 
     if((fp = fopen(path, "w")) == NULL){
         printf("Cannot open duty_percent file, %s\n", path);
+        return 0;
     }
 
     rewind(fp);
