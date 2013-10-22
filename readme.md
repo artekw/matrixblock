@@ -2,7 +2,6 @@
 
 The goal of this project is create a cape for beaglebone black to drive a [Sure Electronic 32x16 LED Display](http://www.sureelectronics.net/goods.php?id=1095).
 
-The plan is to put on PCB RTC clock based on NXP PCF8563 chip.
 
 ## Hardware Connection
 
@@ -20,16 +19,22 @@ Examples:
     $ make
     $ ./test
 
-Daemon:
+Clock:
 
-    $ pacman -Sy json-c
     $ make
-    $ ./daemon
+    $ ./clock
 
 ### TODO
 
 - python bindings or TCP deamon
-- cape schematics and PCB
+
+### DONE
+
+- print static text
+- scroll text
+- set brightness (in range 0-16)
+- schematics and PCB design of cape
+- DT code and EEEPROM firmware
 
 
 ### Source
