@@ -1,13 +1,13 @@
 # matrixblock
 
-The goal of this project is create a cape for beaglebone black to drive a [Sure Electronic 32x16 LED Display](http://www.sureelectronics.net/goods.php?id=1095).
+The goal of this project is create a cape for BeagleBone Black to drive a [Sure Electronic 32x16 LED Display](http://www.sureelectronics.net/goods.php?id=1095).
 
 
 ## Hardware Connection
 
 ![matrix connection to beaglebone](https://dl.dropboxusercontent.com/u/677573/Photos/surelcd/surelcd_bbb_bb.png)
 
-Power circuit from matrix connector, not beaglebone! Use power adapter 5V/2A.
+Power circuit from matrix connector, not BeagleBone! Use power adapter 5V/2A.
 
 ## Compile the code
 
@@ -35,6 +35,7 @@ Clock:
 - set brightness (in range 0-16)
 - schematics and PCB design of cape
 - DT code and EEEPROM firmware
+- add RTC clock
 
 
 ### Source
