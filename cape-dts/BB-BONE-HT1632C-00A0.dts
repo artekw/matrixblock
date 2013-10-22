@@ -1,0 +1,71 @@
+/*
+* BB-HT1632C-00A0.dts - Device Tree file for BeagleBone HT1632C Cape - Matrix LED Controller
+*
+* Copyright (C) 2013 DIGI-LED <info@digi-led.pl>
+*
+* Licensed under GPLv2.
+*/
+
+/dts-v1/;
+/plugin/;
+
+/ {
+        compatible = "ti,beaglebone", "ti,beaglebone-black";
+
+    /* identification */
+        part-number = "BB-BONE-HT1632C";
+        version = "00A0";
+
+    exclusive-use =
+        /* the pin header uses */
+        "P9.12",    /* HT1632C */
+        "P9.23",    /* HT1632C */
+        "P9.15",    /* HT1632C */
+        "P9.16",    /* HT1632C */
+        "P8.7",     /* RGB_G */
+        "P8.8",     /* RGB_R */
+        "P8.9";     /* RGB_B */
+
+        fragment@0 {
+            target = <&am33xx_pinmux>;
+            __overlay__ {
+                    bb_ht1632c_pins: pinmux_bb_ht1632c_pins {
+                        pinctrl-single,pins = <
+                                0x078 0x27 /* P8_12 = gpio1[28] */
+                                0x044 0x27 /* P8_23 = gpio1[17] */
+                                0x048 0x27 /* P8_15 = gpio1[16] */
+                                0x04C 0x27 /* P8_16 = gpio1[19] */
+                        >;
+                    };
+            };
+        };
+
+        fragment@1 {
+            target = <&i2c2>;
+            __overlay__ {
+                /* shut up DTC warnings */
+                #address-cells = <1>;
+                #size-cells = <0>;
+
+                /* PCF8563 RTC module */
+                rtc@51 {
+                    compatible = "nxp,pcf8563";
+                    reg = <0x51>;
+                };
+            };
+        };
+
+    fragment@2 {
+        target = <&ocp>;
+        __overlay__ {
+            #address-cells = <1>;
+            #size-cells = <1>;
+            bb_ht1632c_pins {
+                compatible = "bone-pinmux-helper";
+                pinctrl-names = "default";
+                pinctrl-0 = <&bb_ht1632c_pins>;
+                status = "okay";
+            };
+        };
+    };
+};
