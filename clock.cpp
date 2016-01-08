@@ -3,18 +3,20 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <string.h>
-/*
 
+/*
 #define DATA 28 // P9_12
 #define WR 17 // P9_23
 #define CS 16 // P9_15
 #define CLK 19 // P9_16
 */
+
 #define BANK 2
-#define DATA 5 // P9_12
-#define WR 2 // P9_23
-#define CS 3 // P9_15
-#define CLK 4 // P9_16
+#define DATA 5 // P9_17
+#define WR 2 // P9_22
+#define CS 3 // P9_21
+#define CLK 4 // P9_18
+
 
 void clock(HT1632c *matrix) {
   char buffer[6];
